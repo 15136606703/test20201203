@@ -1,0 +1,666 @@
+Linux
+	操作系统
+		目录说明：
+			1.bin->usr/bin: 这个目录存放最经常使用的命令
+			2.boot：存放启动linux时使用的一些核心文件，包括一些链接文件以及镜像文件
+			3.dev：dev是device(设备)的缩写，该目录下存放的是linux的外部设备，linux中的设备也是以文件的形式存在
+			4.etc：这个目录存放所有的系统管理所需要的配置文件
+			5.home：用户的主目录，在linux中每个用户都有一个自己的目录，一般该目录名以用户名的账号命名
+			6.lib->user/lib:这个目录存放这喜用最基本的动态连接共享库，器作用类似于windows例的dll文件，几乎所用的应用程序都需要用到这些共享库。
+			7.mnt：系统提供该目录是为了让用户临时挂载别的文件系统，我们可以将光驱挂载在/mnt/上，然后进入该目录就可以查看光驱里的内容
+			8.opt：这是给linux额外安装软件所存放的目录。比如你安装一个oracle数据库则就可以放在这个目录下，默认为空。
+			9.root：该目录是系统管理员目录，root是具有超级权限的用户
+			10.tmp：这个目录是用来存放一些临时文件的
+			11.usr：这是一个非常重要的目录，用户的很多应用程序和文件都放在这个目录下，类似于windows下的program files目录
+			12.var：这个目录存放在不断扩充着的东西，我们习惯将那些经常被修改的文件存放在该目录下，比如运行各种日志文件
+
+		linux命令：
+			命令分类：磁盘管理，文件管理，系统管理，压缩/解压，网络通讯，网络访问，权限管理，管道和重定向，vi编辑命令，安装软件命令
+				1.切换目录： cd 空格 + 目录 ；ls显示该文件夹下的所有目录；ll显示该文件夹下的所有目录详情(-：文件，d：文件夹，l：执行文件)；pwd显示该文件路径
+				2.常见目录：mkdir 目录名 列如：mkdir test ，mkdir test1 test2(可以批量创建),
+				3.删除文件或目录： rm（只能删除文件，并且有提示），rm-rf(r表示递归删除，f不做确认提示)     （echo "ok" > my.txt）（cat 文件：查看文件名称）
+				4.复制文件：cp ，cp-rf 语法：cp 被复制的文件名 新的文件名
+				5.查看文件内容： cat + 文件名称 ，分页查看文件内容： more + 文件名称 逐行查看 回车，逐屏查看 空格 head 查看开头10行 tail文件尾部10行， （-n 数字）
+				6.文件内搜索：grep  (-i不区分大小写) 搜索内容 文件名称  （搜索内容有空格加上双引号）
+				7.使用管道 ”|“ cat aa.txt | grep java 
+				8.切换用户 su
+				9.重启系统;reboot ,关机：shutdown -h now 
+				10.查看系统进程：ps -ef -e:显示当前所有进程 -f：显示UID,PPID,C与STIME栏位信息
+					UID：拥有该程序的用户，PID：拥有的进程id，PPID：父进程的id，C:cpu使用的资源百分比，STIME：系统启动时间
+				11.杀死进程 kill pid：杀掉进程，kill -9 pid 强制杀掉进程
+				12.压缩（归档）：tar 用来压缩和解压文件，tar压缩后的文件也叫归档。
+					语法：tar参数要压缩或解压的文件或目录
+					常用参数： z:使用压缩，生成的文件名是 xxx.tar.gz 这是linux中常用的压缩格式
+							   c:创建压缩文档
+							   v:显示压缩，解压过程中处理的文件名
+							   f:指定归档文件名，tar参数后面是归档文件名
+							   x:从归档文件中释放文件，就是解压
+							   t:列出归档文件内容，查看文件内容
+					压缩： tar -zcvf 
+					解压缩 tar -zxvf
+					C:大写C 解压到指定目录，使用方式 -C 目录
+					
+				13.网络通讯： ifconfig
+				14.网路访问： curl
+				15.下载资源： wget
+				16.权限管理：权限指用户或程序对目录，文件执行的操作 执行ll 或ls -l
+					九位字符 rwx(拥有者) rwx(所属用户组) rwx(其它) （rwx分别是读写执行）
+					a、读权限：读取文件内容，对文件执行cat，more，less这样的查看命令，对目录来说可以读取目录中文件列表r--read 读权限 4
+					b、写权限:编辑，新增，修改文件内容 w--write 写权限 2
+					c、执行权限：进入目录，访问目录中的文件内容 x--execute 执行权限 1
+					d、常见的权限设置 rwx=4+2+1=7
+						常见644 755 777 三种权限 创建文件的用户就是文件的拥有者，用户所在的组就是文件的所在组，除了创建文件的用户都是其他用户， root有最高权限
+					
+					权限设置：
+						修改文件权限：chmod分配权限 语法 chmod 606 ok.txt）
+						修改文件的拥有者：chown   chown -R root:root nginx-1.14.2:同时修改拥有者和用户组 
+				17.管道和重定向
+					重定向输出覆盖： > 
+					重定向追加： >>
+					管道就是用”|“连接两个命令，以前面一个命令的输出作为后面的命令输入。用于吧管道左边的输出作为右边的输入
+						
+				18.vi和vim编辑器
+				19.安装软件命令
+					yum：
+						
+
+
+1.maven管理多模块应用
+	1.1场景描述
+		commonModel：提供公共的基础服务，比如工具类，常量类等；
+		bussinessModel：业务模块，是系统真正要实现的业务，依赖于common模块，比如订单管理，财务管理，会员管理等
+		application:可发布的web应用，有个个bussinessModel组成，最终满足项目整体需求：
+		第三方模块：包括各类框架，spring，MyBatis，日志等。整个应用都依赖他们完成开发的
+2.如何管理
+	maven管理多模块应用的实现是互联网项目中使用分布式开发，那么每个独立的服务都会使用独立的项目进行维护，那么这样就需要使用多模块应用管理，来实现项目的高度统一
+	2.1第一种实现方式
+		1.创建maven项目
+			maven父工程必须遵循两点要求：
+				1.packing标签的文本内容必须设置为pom 
+					packing标签的是指打包的方式，默认为jar，如果pom文件没有packing标签那么默认就是jar
+					pom是项目对象模型（project object module），该文件是可以被子工程继承的，maven多模块管理其实就是让他的子模块继承
+				2.把src删除掉
+
+RabbitMQ
+	1.RabbitMQ概述
+		1.1什么是消息队列
+			消息是只在应用见传递的数据。消息可以非常简单，比如值包含文本的字符串，也可以更复杂，可能包含嵌入对象
+			消息队列：是一种应用见的通信方式，消息发送后可以立即返回，有消息系统来确保消息的可靠传递。消息发布到MQ只不过而不是管谁来去，消息使用者
+				只管从MQ中取消息而不管谁发布的，这样发布者和使用者都不知道对方的存在。
+		1.2为什么要使用消息队列
+			消息队列是一种应用间的异步协作机制，什么时候使用
+			常见的订单系统伪劣，用户点击下单业务逻辑可能包括：扣减库存，生成相应单据，发红吧，发短息通知。在业务发展初期这些逻辑可能放在一起同步执行
+			随着业务的发展订单量增长，需要提升系统服务的性能，这是可以将一些不需要立即生效的操作拆分出来异步执行，比如发红包，发短信通知等。
+			这中场景下就可以用MQ，在下单的住流程完成之后发送一条消息到MQ让主流程快速完结，而由另外的单独线程拉去MQ的消息，当发现MQ中有发红包活发短信之类的消息时，执行相应的业务逻辑
+			
+			以上是用于业务解耦的情况，其它常见场景包括最终一致性，广播，错峰流控等等
+			
+		1.3RabbitMQ特点
+			是由Eelang语言开发AMOP的开源实现
+			AMOP：告急消息队列协议。他是应用层协议的一个开放标准，为面向消息的中间件设计。
+			
+			1.可靠性
+			2.灵活的路由
+			3.消息集群
+			4.高可用
+			5.多种协议
+			6.多语言客户端
+			7.管理界面
+			
+	2.RabbitMQ消息发送和接收
+		2.1：RabbitMQ消息发送和接收机制 AMQP协议机制
+			所有的mq产品从模型抽象来说都是一样的过程，消费者订阅某个队列。生产者创建消息，然后发布到队列中，最后将消息发送到监听的消费者。
+			
+redis：
+	1.NoSQL
+		1.1：什么是NoSQL
+			非关系型数据库，数据的结构是松散的，可变的
+		1.2：为什么使用NoSQL
+			处理：1.访问量大；2.高并发；3.高可用；4.海量数据
+		1.3：优势
+			1.大数据量，高性能
+			2.灵活的数据模型
+			3.高可用
+			4.低成本
+		1.4：劣势
+			1.无关系，数据之间是无联系的
+			2.不支持标准的sql，没有公认的nosql标准
+			3.没有关系型数据库的约束，大多数也没有索引概念
+			4.没有事物，不能依赖事物实现ACID
+			5.没有丰富的数据类型
+	2.redis：是当今非常流行的基于KV结构的作为Cache使用的NoSQL数据库
+		基本命令：
+			1.沟通命令 ping
+			2.查看当前数据库中key的数目：dbsize
+			3.切换库命令：select + 库
+			4.删除当前库中的数据：flushdb
+			5.退出自带的客户端，退出当前redis连接：exit或quit
+		redis的key的操作命令
+			1.key：
+				语法：keys pattern
+				作用：查找所有符合模式pattern的key。pattern可以使用通配符
+				通配符： * ：表示0-多个字符，例如：keys*查询所有key； ？：表示单个字符，例如：wo?d,匹配word，wood等
+			2.exists：
+				语法：exists key[key...]
+				作用：判断key是否存在
+				返回值：整数，存在key返回1，其它返回0，使用多个key，返回存在的key的数量。
+			3.expire
+				expire key seconds
+				作用：设置key的生存时间，超过时间，key自动删除，单位是秒
+				返回值：设置成功返回1，其它返回0
+			4.ttl：
+				ttl key
+				作用：以秒为单位，返回key的剩余生存时间（ttl:time to live）
+				返回值：-1:没有设置key的生存时间，key永不过期，-2：key不存在 ，数字：key的剩余时间，秒为单位
+			5.type：
+				语法：type key
+				作用：检查key所存储的数据类型
+				返回值：字符串表示的数据类型
+			6.del
+				语法：del key[key...]
+				作用：删除存在的key，不存在的key忽略set
+				返回值：数字，删除的key的数量
+		redis的5种数据类型：
+			1.string：他可以存储任何形式的字符串，二进制数据，序列化后的数据，json数据
+				基本命令：
+					1.set key value 设置值
+					2.get key 获取key所对应的值
+					3.incr 将key中存储的数字值加1，如果key不存在，则key的值先被初始化为0在执行incr操作（只能对数字类型的数据操作）
+						incr key 
+					4.decr 将key中存储的数字值减1，如果key不存在，则key的值先被初始化为0在执行decr操作（只能对数字类型的数据操作）
+						decr key
+					5.append：追加
+				常用命令：
+					1.strlen key 求字符串长度
+					2.getrange key start end 例getrange school 2 5 截取2到5的字符
+					3.setrange key offset value 例：替换给定的字符串
+					4.mset key value 同时创建多个key和value
+					5.mget 同时获得多个key存储的值
+			2.hash：是一个string类型的field和value的映射表，hash特别适合存储对象
+				基本命令：
+					1.hset
+					2.hget
+					3.hmset
+					4.hmgethk
+					5.hgetall
+					6.hdel 删除指定的field
+				常用命令：
+					1.hkeys 获取所有的field
+					2.hvalue 获取所有的value
+					3.hexists 检查field是否存在
+			3.list：列表是简单的字符串列表，按照插入顺序排序可以添加一个元素到列表的头不或者尾部
+				基本命令：（l开头左侧添加，r开头右侧添加）
+					1.lpush 将一个或多个值value插入到列表
+					2.lrange : lrange key start stop 获取列表key中指定区间内的元素，start，stop表示列表的下表值
+					3.lindex： 取出指定下表的元素
+					4.llen：取列表的长度
+				常用命令：
+					1.lrem： lrem key count value 根基参数count的值移除列表中与参数value相等的元素，count>0从列表的左侧向右开始移动，count<0反之 count=0移除所有相等的值
+					2.lset： lset key index value 将列表key下表为index的元素值设置为value
+					3.linsert：linsert key before|after pivot value 将value插入到列表key当中位于值pivot之前或之后的位置  pivot：指定的元素
+			4.set：是string类型的无序集合，集合成员是唯一的，即集合中不能出现重复的数据。
+				基本命令：
+					1.sadd
+					2.smembers 获取set集合中所有成员
+					3.sismember 判断元素是否存在
+					4.scard 计算set集合元素的个数
+					5.srem 删除
+				常用命令：
+					1.srandmember： srandmember key[count] 只提供key随机返回集合中一个元素，提供count（正数）返回count个数的元素集合
+					2.spop： spop key[count] 随机删除元素
+			5.zset：有序集合zset和集合set一样是string类型的集合且不允许出现重复的成员
+				基本命令：
+					1.zadd： zadd key score member[score member...]
+					2.zrange： zrange key start stop [withscores]
+					3.zrevrange: zrevrange key start stop [withscores] 按照分数从打到小排序
+					4.zrem 删除指定成员
+					5.zcard 统计成员数量
+				常用命令：
+					1.zrangebyscore :zrangebyscore key min max[withscores] [limit offset count]
+						获取key中，所有score值介于min和max之间的成员，有序成员是按递增排序
+					2.zrevrangebyscore: 同zrangebyscore 反序 zrevrangebyscore key max min [withscores] [limit offset count]
+					3.zcount： zcount key min max 统计区间数量
+	3.redis事物
+		1.什么是事物
+			多条sql语句的一条集合，确定全部执行成功，一条不成功则执行不成功（redis没有回滚
+			）
+		2.事物操作的命令
+			1.multi：
+				语法:multi 
+				作用：标记一个事物的开始，事物内的多条命令会按照先后顺序被放进一个队列中
+				返回值：总是返回ok
+			2.exec
+				语法:exec 
+				作用：执行所有事物块的命令
+				返回值：事物内的所有执行语句内容，事物被打断返回nil
+			3.discard
+				语法：discard
+				作用：取消事物，放弃执行事物块的所有命令
+				返回值：总是返回ok
+			4.watch
+				语法：watch key [key]
+				作用：监控一个或多个值，如果在事物执行之前这个或这些key值被其它命令所改动，那么事物将被打断
+				返回值：总是返回ok
+			5.unwatch
+				语法：
+				作用：取消watch命令对所有key的监视。如果在执行watch命令之后，exec命令活discard命令先被执行了的话，那么就不需要在执行unwatch了
+				返回值：总是返回ok
+	4.持久化
+		概述：持久化可以理解为存储，就是将数据存储到一个不会丢失的地方，如果吧数据放在内存中
+		
+	
+Nginx:
+	1.Nginx简介
+		1.1：Nginx发展介绍：
+			Nginx （engine x） 是一个高性能的Web服务器和反向代理服务器，也可以作为邮件代理服务器。
+			Nginx 特点是占有内存少，并发处理能力强，以高性能、低系统资源消耗而闻名，Nginx官方测试为5万并发请求。
+				与Nginx同类型的Web服务器还有Apache、Lighttpd（音同lighty）、Tengine（阿里巴巴的） 等。Nginx 的并发处理能力在同类型的Web服务器中表现极好（Apache、Lighttpd），
+				在全世界范围内大量的网站使用了Nginx，国内互联网中也大量使用了Nginx，比如：淘宝、新浪、搜狐、网易、美团等。
+			Nginx是免费开源的，同时Nginx也有收费的商业版本，商业版本提供了性能优化、宕机等紧急问题处理等技术支持和服务。
+			
+		1.2：Nginx作者
+			Nginx 是由俄罗斯人 Igor Sysoev 采用C语言开发编写的，第一个公开版本0.1.0发布于2004年10月4日
+			gor Sysoev出生于1970年的阿拉木图（哈萨克斯坦共和国城市），也就是前苏联。1991年苏联解体，哈萨克斯坦宣布独立，Nginx作者1994年毕业于莫斯科国立鲍曼技术大学；
+			毕业后继续在莫斯科工作和生活，就职于NGINX.Inc，任CTO。https://www.nginx.com/
+			
+		1.3：正向代理和反向代理概念
+			反向代理（Reverse Proxy）方式是指以代理服务器来接受internet上的连接请求，然后将请求转发给内部网络上的服务器，
+				并将从服务器上得到的结果返回给internet上请求连接的客户端，此时代理服务器对外就表现为一个反向代理服务器；
+					举例：比如你现在很无聊，想找人聊天，这时候你拨通了联通客服10010电话，联通的总机可能随机给你分配一个闲置的客服给你接通。
+							这时候你如愿以偿的和客服聊了起来，问了问她目前有没有结婚、有没有对象、家住哪里、她的微信号、她的手机号。。。
+							此时联通总机充当的角色就是反向代理，你只知道和客服接通并聊了起来，具体为什么会接通这个客服MM，怎么接通的，你并不知道。
+							反向代理隐藏了真正的服务端，就像你每天使用百度的时候，只知道敲打www.baidu.com就可以打开百度搜索页面，但背后成千上万台百度服务器具体是哪一台为我们服务的，我们并不知道。
+							我们只知道这个代理服务器，它会把我们的请求转发到真实为我们服务的那台服务器那里去。
+			正向代理类似一个跳板机，代理访问外部资源。比如：我是一个用户，我访问不了某网站，但是我能访问一个代理服务器，
+				这个代理服务器，它能访问那个我不能访问的网站，于是我先连上代理服务器，告诉它我需要那个无法访问网站的内容，代理服务器去取回来,然后返回给我。
+					举例：比如你现在缺钱，想找马云爸爸去借钱，可想而知人家可能鸟都不鸟你，到最后碰一鼻子灰借不到钱。不过你认识你家隔壁老王，而老王认识马云同志，而且关系还很好。
+							这时候你托老王去找马云借钱，当然这事最后成了，你从马云那里借到了500万！这时候马云并不知道钱是你借的，只知道这钱是老王借的。最后由老王把钱转交给你。
+							在这里，老王就充当了一个重要的角色：代理。
+							此时的代理，就是我们常说的正向代理。代理客户端去请求服务器，隐藏了真实客户端，服务器并不知道真实的客户端是谁。正向代理应用最广泛的莫过于现在的某些“科学上网工具”，
+							你访问不了谷歌、Facebook的时候，你可以在国外搭建一台代理服务器，代理你访问，代理服务器再把请求到的数据转交给你，你就可以看到内容了
+			综上所述：正向代理对象是客户端，反向代理的对象是服务端
+		1.4：总结
+			软件层面一般常用nginx来做反向代理服务器，他的性能非常好，用来做负载均衡。
+		
+	2.Nginx环境搭建
+		2.1：下载
+			免费开源版的官方网站：http://nginx.org 
+			Nginx 有 Windows 版本和 Linux 版本，但更推荐在 Linux 下使用 Nginx；
+			下载nginx-1.14.2.tar.gz的源代码文件：wget http://nginx.org/download/nginx-1.14.2.tar.gz
+		2.2：安装
+		
+			2.2.1：安装前的准备
+				Nginx的安装需要确定Linux安装相关的几个库，否则配置和编译会出现错误， 具体的检查安装过程为：
+					1.gcc编译器是否安装：检查是否安装：yum list installed | grep gcc  执行安装：yum install gcc -y
+					2.openssl库是否安装：检查是否安装：yum list installed | grep openssl  执行安装：yum install openssl openssl-devel -y
+					3.pcre库是否安装：检查是否安装：yum list installed | grep pcre  执行安装：yum install pcre pcre-devel -y
+					4.zlib库是否安装：检查是否安装：yum list installed | grep zlib  执行安装：yum install zlib zlib-devel -y
+					5.一次性安装，执行如下命令：yum install gcc openssl openssl-devel pcre pcre-devel zlib zlib-devel -y （省略前几步）
+			2.2.2：正式安装
+				解压下载下来的nginx文件，执行命令：tar -zxvf nginx-1.14.2.tar.gz
+				切换至解压后的nginx主目录，执行命令：cd nginx-1.14.2
+				在nginx主目录nginx-1.14.2下执行命令：./configure --prefix=/usr/local/nginx 
+				（其中--prefix是指定nginx安装路径）  注意:等号左右不要有空格
+				执行命令进行编译：make
+				执行命令进行安装：make install
+				  安装成功后，可以切换到/usr/local/nginx目录下，查看内容
+		2.3：启动
+			2.3.1：普通启动
+				切换到nginx安装目录的sbin目录下，执行：./nginx
+			2.3.2：通过配置文件启动
+				./nginx -c /usr/local/nginx/conf/nginx.conf
+				/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf 
+				其中-c是指定配置文件,而且配置文件路径必须指定绝对路径
+			2.3.3：检查是否启动
+				查看进程：ps -ef | grep nginx 
+		2.4：关闭
+			2.4.1：kill 进程号
+			2.4.2：重启 ./nginx -s reload
+		2.5：检查配置
+			当修改Nginx配置文件后，可以使用Nginx命令进行配置文件语法检查，用于检查Nginx配置文件是否正确
+			/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf 
+		2.6：其它
+			Linux上查看nginx版本：/usr/local/nginx/sbin/nginx -V
+			-v （小写的v）显示 nginx 的版本
+			-V （大写的V）显示 nginx 的版本、编译器版本和配置参数
+			
+	3.nginx配置文件说明及nginx主要应用
+		3.1：nginx的核心配置文件
+			学习Nginx首先需要对它的核心配置文件有一定的认识，这个文件位于Nginx的安装目录/usr/local/nginx/conf目录下，名字为nginx.conf
+			详细配置：
+				#配置worker进程运行用户 nobody也是一个linux用户，一般用于启动程序，没有密码
+				user  nobody;  
+				#配置工作进程数目，根据硬件调整，通常等于CPU数量或者2倍于CPU数量
+				worker_processes  1;  
+
+				#配置全局错误日志及类型，[debug | info | notice | warn | error | crit]，默认是error
+				error_log  logs/error.log;  
+				#error_log  logs/error.log  notice;
+				#error_log  logs/error.log  info;
+
+				pid        logs/nginx.pid;  #配置进程pid文件 
+
+
+				###==================================================== 基本配置
+
+
+				#配置工作模式和连接数
+				events {
+					worker_connections  1024;  #配置每个worker进程连接数上限，nginx支持的总连接数就等于worker_processes * worker_connections
+				}
+
+				###===================================================  events配置
+
+
+				#配置http服务器,利用它的反向代理功能提供负载均衡支持
+				http {
+					#配置nginx支持哪些多媒体类型，可以在conf/mime.types查看支持哪些多媒体类型
+					include       mime.types;  
+					#默认文件类型 流类型，可以理解为支持任意类型
+					default_type  application/octet-stream;  
+					#配置日志格式 
+					#log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+					#                  '$status $body_bytes_sent "$http_referer" '
+					#                  '"$http_user_agent" "$http_x_forwarded_for"';
+
+					#配置access.log日志及存放路径，并使用上面定义的main日志格式
+					#access_log  logs/access.log  main;
+
+					sendfile        on;  #开启高效文件传输模式
+					#tcp_nopush     on;  #防止网络阻塞
+
+					#keepalive_timeout  0;
+					keepalive_timeout  65;  #长连接超时时间，单位是秒
+
+					#gzip  on;  #开启gzip压缩输出
+					
+					###-----------------------------------------------
+					
+
+					#配置虚拟主机
+					server {
+						listen       80;  #配置监听端口
+						server_name  localhost;  #配置服务名
+
+						#charset koi8-r;  #配置字符集
+
+						#access_log  logs/host.access.log  main;  #配置本虚拟主机的访问日志
+
+					#默认的匹配斜杠/的请求，当访问路径中有斜杠/，会被该location匹配到并进行处理
+						location / {
+						#root是配置服务器的默认网站根目录位置，默认为nginx安装主目录下的html目录
+							root   html;  
+						#配置首页文件的名称
+							index  index.html index.htm;  
+						}		
+
+						#error_page  404              /404.html;  #配置404页面
+						# redirect server error pages to the static page /50x.html
+						#error_page   500 502 503 504  /50x.html;  #配置50x错误页面
+						
+					#精确匹配
+					location = /50x.html {
+							root   html;
+						}
+
+						#PHP 脚本请求全部转发到Apache处理
+						# proxy the PHP scripts to Apache listening on 127.0.0.1:80
+						#
+						#location ~ \.php$ {
+						#    proxy_pass   http://127.0.0.1;
+						#}
+
+						#PHP 脚本请求全部转发到FastCGI处理
+						# pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+						#
+						#location ~ \.php$ {
+						#    root           html;
+						#    fastcgi_pass   127.0.0.1:9000;
+						#    fastcgi_index  index.php;
+						#    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+						#    include        fastcgi_params;
+						#}
+
+						#禁止访问 .htaccess 文件
+						# deny access to .htaccess files, if Apache's document root
+						# concurs with nginx's one
+						#
+						#location ~ /\.ht {
+						#    deny  all;
+						#}
+					}
+
+					
+					#配置另一个虚拟主机
+					# another virtual host using mix of IP-, name-, and port-based configuration
+					#
+					#server {
+					#    listen       8000;
+					#    listen       somename:8080;
+					#    server_name  somename  alias  another.alias;
+
+					#    location / {
+					#        root   html;
+					#        index  index.html index.htm;
+					#    }
+					#}
+
+					
+					#配置https服务，安全的网络传输协议，加密传输，端口443，运维来配置
+					#
+					# HTTPS server
+					#
+					#server {
+					#    listen       443 ssl;
+					#    server_name  localhost;
+
+					#    ssl_certificate      cert.pem;
+					#    ssl_certificate_key  cert.key;
+
+					#    ssl_session_cache    shared:SSL:1m;
+					#    ssl_session_timeout  5m;
+
+					#    ssl_ciphers  HIGH:!aNULL:!MD5;
+					#    ssl_prefer_server_ciphers  on;
+
+					#    location / {
+					#        root   html;
+					#        index  index.html index.htm;
+					#    }
+					#}
+				}
+
+		3.2：nginx主要应用
+			静态网站部署,负载均衡，静态代理，动静分离，虚拟主机
+	4.静态网站部署
+		4.1：将静态文件放在linux服务器/opt/static目录下
+			通过修改nginx.conf配置文件
+				在server中，通过location匹配访问的路径，然后转发给静态资源
+					location / {
+						#root是配置服务器的默认网站根目录位置，默认为nginx安装主目录下的html目录
+						root   /opt/static/项目名;（项目所在的包路径）  
+						#配置首页文件的名称
+						index  index.html index.htm;  
+					}
+			然后重启nginx服务器，输入ip访问
+		4.2：通过ip/项目名 访问 
+			在server中，通过location匹配访问的路径，然后转发给静态资源
+			
+				location / {
+					root   html  
+					index  index.html index.htm;  
+				}
+			
+				location / { 这里接受/项目名 请求，去/opt/static/下找资源
+					root   /opt/static/ 
+					index  index.html index.htm;  
+				}
+			重启nginx服务器 
+		4.3：location中配置路径讲解
+			初次接触：可能会遇到404找不到页面的错误，主要原因是配置路径问题；
+			规则：ip + port 等于 root，假设server的配置如下：
+				server {  
+					listen 80; #端口号  
+					location / {  
+						root /opt/static /ace; #静态文件路径
+					}  
+				}
+				替换：
+				http://192.168.92.128:80/ = root = /opt/static/ace
+				http://192.168.92.128:80/ace = root/ace = /opt/static/ace/ace 
+			location匹配顺序：
+				在没有标识符的请求下，匹配规则如下：
+				1、nginx服务器首先在server块的多个location块中搜索是否有标准的uri和请求字符串匹配。如果有多个标准uri可以匹配，就匹配其中匹配度最高的一个location。
+				2、然后，nginx在使用location块中，正则uri和请求字符串，进行匹配。如果正则匹配成功，则结束匹配，并使用这个location处理请求；如果正则匹配失败，则使用标准uri中，匹配度最高的location。
+				
+				备注：
+					1、如果有精确匹配，会先进行精确匹配，匹配成功，立刻返回结果。
+					2、普通匹配与顺序无关，因为按照匹配的长短来取匹配结果。
+					3、正则匹配与顺序有关，因为是从上往下匹配。(首先匹配，就结束解析过程)
+					4、在location中，有一种统配的location，所有的请求，都可以匹配，如下：
+						location  / {
+						  # 因为所有的地址都以 / 开头，所以这条规则将匹配到所有请求
+						  # 但是正则和最长字符串会优先匹配
+						}
+						结合标识符，匹配顺序如下：
+						(location =) > (location 完整路径) > (location ^~ 路径) > (location ~,~* 正则顺序) > (location 部分起始路径) > (location /)
+						即
+						（精确匹配）> (最长字符串匹配，但完全匹配) >（非正则匹配）>（正则匹配）>（最长字符串匹配，不完全匹配）>（location通配）
+	5.负载均衡 
+		5.1：负载均衡概述
+			在网站创立初期，我们一般都使用单台机器对外提供集中式服务。随着业务量的增大，我们一台服务器不够用，此时就会把多台机器组成一个集群对外提供服务，但是，我们网站对外提供的访问入口通常只有一个，
+			比如 www.web.com。那么当用户在浏览器输入www.web.com进行访问的时候，如何将用户的请求分发到集群中不同的机器上呢，这就是负载均衡要做的事情。
+			负载均衡通常是指将请求"均匀"分摊到集群中多个服务器节点上执行，这里的均匀是指在一个比较大的统计范围内是基本均匀的，并不是完全均匀。
+		5.2：负载均衡实现方式
+			5.2.1：5.2.17硬件负载均衡
+				比如 F5、深信服、Array 等
+				优点是有厂商专业的技术服务团队提供支持，性能稳定
+				缺点是费用昂贵，对于规模较小的网络应用成本太高
+			5.2.2：软件负载均衡
+				比如 Nginx、LVS、HAProxy 等
+				优点是免费开源，成本低廉
+			5.2.3：Nginx负载均衡
+				Nginx通过在nginx.conf文件进行配置即可实现负载均衡
+				用户发送请求先到nginx再转发给tomcat到动态资源
+				
+				配置如下： （配置两步即可）
+					1.在http模块加上upstream配置
+						upstream www.zh.com{
+							server 127.0.0.1:9100 weight=3
+							server 127.0.0.1:9100 weight=1
+						}
+					其中weight=1表示权重，用于后端服务器性能不均的情况，访问比率约等于权重之比，权重越大访问机会越多
+					upstream 是配置nginx与后端服务器负载均衡非常重要的一个模块，并且他还能对后端的服务器的健康状态进行检查，若后端服务器中的一台发生故障，则前端的请求不会转发到该故障服务器
+					2.在server模块里添加location，并配置proxy_pass
+						location /myweb {
+							proxy_pass http://www.zh.com;
+						}
+						其中 www.zh.com 字符串要和 upstream 后面的字符串相等
+		5.3：nginx常用负载均衡策略
+			5.3.1：轮询（默认）
+				注意：这里的轮询并不是每个请求轮流分配到不同的后端服务器，与ip_hash类似，但是按照访问url的hash结果来分配请求，使得每个url定向到同一个后端服务器，主要应用于后端服务器为缓存时的场景下。
+				如果后端服务器down掉，将自动剔除
+				upstream backserver { 
+					server 127.0.0.1:8080; 
+					server 127.0.0.1:9090; 
+				} 
+			5.3.2：权重
+				每个请求按一定比例分发到不同的后端服务器，weight值越大访问的比例越大，用于后端服务器性能不均的情况
+				upstream backserver { 
+					server 192.168.0.14 weight=5; 
+					server 192.168.0.15 weight=2; 
+				} 
+			5.3.3：ip_hash
+				p_hash也叫IP绑定，每个请求按访问ip的hash值分配，这样每个访问客户端会固定访问一个后端服务器，可以解决会话Session丢失的问题
+				算法：hash("124.207.55.82") % 2 = 0, 1
+				upstream backserver { 
+					ip_hash; 
+					server 127.0.0.1:8080; 
+					server 127.0.0.1:9090; 
+				}
+				
+			5.3.4：最少连接
+				web请求会被转发到连接数最少的服务器上
+				upstream backserver { 
+					least_conn;
+					server 127.0.0.1:8080; 
+					server 127.0.0.1:9090; 
+				}
+		5.4.其它配置
+			配置1：
+				upstream backserver { 
+					server 127.0.0.1:9100;
+					#其它所有的非backup机器down的时候，才请求backup机器
+					server 127.0.0.1:9200 backup; 
+				} 
+			配置2：
+				upstream backserver { 
+					server 127.0.0.1:9100;
+					#down表示当前的server是down状态，不参与负载均衡
+						server 127.0.0.1:9200 down; 
+				} 
+			一般在项目上线的时候，可以分配部署不同的服务器上，然后对Nginx重新reload。
+			reload不会影响用户的访问，或者可以给一个提示页面,系统正在升级...
+	6.静态代理
+		把所有静态资源的访问改为访问nginx，而不是访问tomcat，这种方式叫静态代理。因为nginx更擅长于静态资源的处理，性能更好，效率更高。
+		所以在实际应用中，我们将静态资源比如图片、css、html、js等交给nginx处理，而不是由tomcat处理。
+		6.1：方式一
+			在nginx.conf的location中配置静态资源的后缀
+			location ~ .*\.(js|css|htm|html|gif|jpg|jpeg|png|bmp|swf|ioc|rar|zip|txt|flv|mid
+				|doc|ppt|pdf|xls|mp3|wma)$ {
+						root /opt/static;
+			}
+			说明：~ 表示正则匹配，也就是说后面的内容可以是正则表达式匹配，第一个点 . 表示任意字符，*表示一个或多个字符
+				\. 是转移字符，是后面这个点的转移字符 ，| 表示或者 ，$ 表示结尾
+				整个配置表示以 .后面括号里面的这些后缀结尾的文件都由nginx处理
+				放置静态资源的目录，要注意一下目录权限问题，如果权限不足，给目录赋予权限； 
+				否则会出现403错误 chmod 755	
+		6.2：方式二
+			在nginx.conf的location中配置静态资源所在目录实现
+			例如：当访问静态资源，则从linux服务器/opt/static目录下获取（举例）
+			location ~ .*/(css|js|img|images) {
+				root   /opt/static;
+			}
+				xxx/css
+				xxx/js
+				xxx/img
+				xxx/images
+				我们将静态资源放入 /opt/static 目录下，然后用户访问时由nginx返回这些静态资源
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
